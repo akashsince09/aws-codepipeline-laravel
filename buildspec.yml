@@ -1,0 +1,36 @@
+
+version: 0.2
+phases:
+ install:
+   commands:
+     - |
+         export DEBIAN_FRONTEND=noninteractive
+         #Update
+         sudo yum update
+         # Install SQLITE3
+         sudo yum install -y sqlite3
+         #Install composer
+         sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+         sudo php composer-setup.php ;
+         sudo php -r "unlink('composer-setup.php');" ;
+         sudo mv composer.phar /usr/local/bin/composer
+         #Various handy node based dev tools - do you need these during your build? Comment if not.
+         #npm install -g gulp
+         #npm install -g grunt
+         #npm install -g webpack
+ build:
+   commands:
+     - sudo echo Build started on `date`
+     - sudo echo Installing composer deps
+     - sudo composer install
+     - sudo touch database/database.sqlite
+     - sudo php artisan migrate --database=sqlite --force
+
+ post_build:
+   commands:
+     - sudo echo Build completed on `date`
+     # Do you need to do this? In many cases phpunit will use sqlite or similar to avoid the need for a real DB.
+     # If you don't need it delete it
+     # - /usr/bin/mysql  -u root -e "GRANT ALL ON *.* TO 'test'@'localhost' IDENTIFIED BY '' WITH GRANT OPTION"
+     # - mysqladmin -u test create test
+     - ./vendor/bin/phpunit
