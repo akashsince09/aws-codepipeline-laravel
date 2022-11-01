@@ -6,20 +6,20 @@ files:
 hooks:
   BeforeInstall:
     - location: scripts/install_dependencies
-      timeout: 9000
+      timeout: 900
       runas: ec2-user
   AfterInstall:
     - location: scripts/deploy_laravel
-      timeout: 9000
+      timeout: 900
       runas: ec2-user
     - location: scripts/change_permissions
-      timeout: 9000
+      timeout: 900
       runas: ec2-user
   ApplicationStart:
     - location: scripts/start_server
-      timeout: 9200
+      timeout: 920
       runas: ec2-user    
   ApplicationStop:
     - location: scripts/stop_server
-      timeout: 9200
+      timeout: 920
       runas: ec2-user
