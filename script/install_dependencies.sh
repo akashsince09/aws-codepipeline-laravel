@@ -4,27 +4,27 @@
 set -o errexit -o pipefail
 
 # Update yum
-yum update -y
+sudo yum update -y
 
 # Install packages
-yum install -y curl
-yum install -y git
+sudo yum install -y curl
+sudo yum install -y git
 
 # Remove current apache & php
-yum -y remove httpd* php*
+sudo yum -y remove httpd* php*
 
 # Install PHP 7.1
-yum install -y php71 php71-cli php71-fpm php71-mysql php71-xml php71-curl php71-opcache php71-pdo php71-gd php71-pecl-apcu php71-mbstring php71-imap php71-pecl-redis php71-mcrypt php71-mysqlnd mod24_ssl
+sudo yum install -y php71 php71-cli php71-fpm php71-mysql php71-xml php71-curl php71-opcache php71-pdo php71-gd php71-pecl-apcu php71-mbstring php71-imap php71-pecl-redis php71-mcrypt php71-mysqlnd mod24_ssl
 
 # Install Apache 2.4
-yum -y install httpd24
+sudo yum -y install httpd24
 
 # Allow URL rewrites
-sed -i 's#AllowOverride None#AllowOverride All#' /etc/httpd/conf/httpd.conf
+sudo sed -i 's#AllowOverride None#AllowOverride All#' /etc/httpd/conf/httpd.conf
 
 # Change apache document root
-mkdir -p /var/www/html/public
-sed -i 's#DocumentRoot "/var/www/html"#DocumentRoot "/var/www/html/public"#' /etc/httpd/conf/httpd.conf
+sudo mkdir -p /var/www/html/public
+sudo sed -i 's#DocumentRoot "/var/www/html"#DocumentRoot "/var/www/html/public"#' /etc/httpd/conf/httpd.conf
 
 # Change apache directory index
 sed -e 's/DirectoryIndex.*/DirectoryIndex index.html index.php/' -i /etc/httpd/conf/httpd.conf
@@ -39,10 +39,10 @@ else
 fi
 
 # Restart apache
-service httpd start
+sudo service httpd start
 
 # Setup apache to start on boot
-chkconfig httpd on
+sudo chkconfig httpd on
 
 # Ensure aws-cli is installed and configured
 if [ ! -f "/usr/bin/aws" ]; then
