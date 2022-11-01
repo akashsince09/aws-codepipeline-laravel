@@ -6,7 +6,7 @@ phases:
      - |
          export DEBIAN_FRONTEND=noninteractive
          #Update
-         sudo yum update
+         sudo yum update -y
          # Install SQLITE3
          sudo yum install -y sqlite3
          #Install composer
